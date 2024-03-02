@@ -1,5 +1,4 @@
-from selene import browser, command, have, be
-from selene.support.shared.jquery_style import s
+from selene import browser, have, be
 from selenium import webdriver
 from demoqa_tests import resource
 import time
@@ -15,80 +14,62 @@ class RegistrationPage:
         browser.driver.execute_script("document.querySelector('#fixedban').remove();")
         browser.driver.execute_script("document.querySelector('footer').remove();")
 
-    def fill_first_name(self, value):
-        s('#firstName').should(be.blank).type(value)
-        return self
+    def fill_first_name(self, first_name):
+        browser.element('#firstName').should(be.visible).type(first_name)
 
-    def fill_last_name(self, value):
-        s('#lastName').should(be.blank).type(value)
-        return self
+    def fill_last_name(self, last_name):
+        browser.element('#lastName').should(be.visible).type(last_name)
 
+    def fill_email(self, email):
+        browser.element('#userEmail').should(be.visible).type(email)
 
+    def fill_gender(self, gender):
+        browser.all('[for^=gender-radio]').element_by(
+            have.exact_text(gender)).click()
 
-    def fill_email(self, value):
-        s('#userEmail').should(be.blank).type(value)
-        return self
+    def fill_phone(self, phone):
+        browser.element('#userNumber').should(be.visible).type(phone)
 
-    def select_gender(self, value):
-        browser.all('[for^=gender-radio]').element_by(have.exact_text(value)).click()
-        return self
-
-    def fill_mobile_number(self, value):
-        s('#userNumber').type(value)
-        return self
-
-    def fill_date_of_birth(self, year, month, day):
+    def fill_date_of_birth(self, day, month, year):
         browser.element("#dateOfBirthInput").click()
         browser.element(".react-datepicker__year-select").send_keys(year)
         browser.element(".react-datepicker__month-select").send_keys(month)
         browser.element(f".react-datepicker__day--0{day}").click()
-        time.sleep(3)
 
-    def fill_subject(self, value):
-        s('#subjectsInput').type(value).press_enter()
-        return self
+    def fill_subjects(self, subjects):
+        browser.element('#subjectsInput').type(subjects).press_enter()
 
+    def fill_hobbies(self, hobbies):
+        browser.all('[for^=hobbies-checkbox]').element_by(
+            have.exact_text(hobbies)).click()
 
-    def select_hobby(self, value):
-        browser.all('[for^=hobbies-checkbox-2]').element_by(have.exact_text(value)).click()
-        return self
+    def attach_photo(self, photo):
+        browser.element("#uploadPicture").send_keys(
+            resource.path_photo(photo))
 
-    def upload_picture(self, value):
-        s('#uploadPicture').set_value(resource.path(value))
-        return self
+    def fill_current_address(self, current_address):
+        browser.element('#currentAddress').should(
+            be.visible).type(current_address)
 
-    def fill_current_address(self, data):
-        s('#currentAddress').should(be.blank).perform((command.js.set_value(data)))
-        return self
+    def fill_state(self, state):
+        browser.element('#state').click()
+        browser.all('[id^=react-select][id*=option]').element_by(
+            have.exact_text(state)).click()
 
-    def select_state(self, value):
-        s('#state').click()
-        browser.all('[id^=react-select][id*=option]').element_by(have.exact_text(value)).click()
-        return self
+    def fill_city(self, city):
+        browser.element('#city').click()
+        browser.all('[id^=react-select][id*=option]').element_by(
+            have.exact_text(city)).click()
 
-    def select_city(self, value):
-        s('#city').click()
-        browser.all('[id^=react-select][id*=option]').element_by(have.exact_text(value)).click()
-        return self
+    def sumbit(self):
+        browser.element('#submit').should(be.clickable).press_enter()
 
-    def submit(self):
-        s('#submit').perform(command.js.click)
-        return self
-
-    def should_register_user_with(self, full_name, email, gender, number, date_of_birth, subjects, hobbies, photo,
-                                  current_address, state_city):
-        browser.element('#example-modal-sizes-title-lg').should(have.exact_text('Thanks for submitting the form'))
+    def should_registration_form(self, first_name, last_name, email, gender,
+                                 phone, date_of_birth, subjects, hobbies,
+                                 photo, current_address, state, city):
+        browser.element('#example-modal-sizes-title-lg').should(
+            have.exact_text('Thanks for submitting the form'))
         browser.element('.table').all('td').even.should(
-            have.texts(
-                full_name,
-                email,
-                gender,
-                number,
-                date_of_birth,
-                subjects,
-                hobbies,
-                photo,
-                current_address,
-                state_city
-            )
-        )
+            have.texts(f'{first_name} {last_name}', {email}, {gender}, {phone},
+                       {date_of_birth}, {subjects}, {hobbies}, {photo},
+                       {current_address}, f'{state} {city}'))
