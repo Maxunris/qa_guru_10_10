@@ -1,16 +1,19 @@
 from selene import browser, command, have, be
 from selene.support.shared.jquery_style import s
-from selenium.webdriver import Keys
 from selenium import webdriver
 from demoqa_tests import resource
+import time
 
 
 class RegistrationPage:
+
     def open(self):
         driver_options = webdriver.ChromeOptions()
         driver_options.page_load_strategy = "eager"
         browser.config.driver_options = driver_options
         browser.open('/automation-practice-form')
+        browser.driver.execute_script("document.querySelector('#fixedban').remove();")
+        browser.driver.execute_script("document.querySelector('footer').remove();")
 
     def fill_first_name(self, value):
         s('#firstName').should(be.blank).type(value)
@@ -20,9 +23,12 @@ class RegistrationPage:
         s('#lastName').should(be.blank).type(value)
         return self
 
-    def fill_date_of_birth(self, value):
-        s('#dateOfBirthInput').send_keys(Keys.CONTROL, 'a').type(value).press_enter()
-        return self
+    def fill_date_of_birth(self, year, month, day):
+        browser.element("#dateOfBirthInput").click()
+        browser.element(".react-datepicker__year-select").send_keys(year)
+        browser.element(".react-datepicker__month-select").send_keys(month)
+        browser.element(f".react-datepicker__day--0{day}").click()
+        time.sleep(3)
 
     def fill_email(self, value):
         s('#userEmail').should(be.blank).type(value)
@@ -37,8 +43,9 @@ class RegistrationPage:
         return self
 
     def fill_subject(self, value):
-        s('#subjectsInput').type(value).press_enter()
+        browser.element('#subjectsInput').type(value).press_enter()
         return self
+
 
     def select_hobby(self, value):
         browser.all('[for^=hobbies-checkbox-2]').element_by(have.exact_text(value)).click()
@@ -64,6 +71,7 @@ class RegistrationPage:
 
     def submit(self):
         s('#submit').perform(command.js.click)
+        return self
 
     def should_register_user_with(self, full_name, email, gender, number, date_of_birth, subjects, hobbies, photo,
                                   current_address, state_city):

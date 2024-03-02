@@ -12,11 +12,11 @@ def test_fill_form_automation_flow():
         .fill_email('Maxcheshire1@gmail.com')
         .select_gender('Male')
         .fill_mobile_number('7999123121')
-        .fill_date_of_birth('26 March 1998')
-        .fill_subject('Maths')
+        .fill_date_of_birth("1998", "March", "26")
+        .fill_subject('Computer Science')
         .select_hobby('Reading')
         .upload_picture('123.jpeg')
-        .fill_current_address('Sushkina-kolotushkina, Moscow, Russia')
+        .fill_current_address('Pushkina-kolotushkina, Moscow, Russia')
         .select_state('NCR')
         .select_city('Delhi')
         .submit()
@@ -28,7 +28,7 @@ def test_fill_form_automation_flow():
                                                 'Male',
                                                 '7999123121',
                                                 '26 March,1998',
-                                                'Maths',
+                                                'Computer Science',
                                                 'Reading',
                                                 '123.jpeg',
                                                 'Pushkina-kolotushkina, Moscow, Russia',
