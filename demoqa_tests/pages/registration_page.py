@@ -1,10 +1,14 @@
 from selene import browser, be, have
+from selenium import webdriver
 from demoqa_tests import resource_path
 
 
 class RegistrationPage:
 
     def open(self):
+        driver_options = webdriver.ChromeOptions()
+        driver_options.page_load_strategy = "eager"
+        browser.config.driver_options = driver_options
         browser.open("/")
 
     def fill_first_name(self, first_name):

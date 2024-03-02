@@ -9,7 +9,7 @@ def test_user_registration_form():
     registration_pages.fill_email('Maxcheshire1@gmail.com')
     registration_pages.fill_gender('Male')
     registration_pages.fill_phone('7999123121')
-    registration_pages.fill_date_of_birth("25", "March", "1998")
+    registration_pages.fill_date_of_birth("26", "March", "1998")
     registration_pages.fill_subjects('Computer Science')
     registration_pages.fill_hobbies('Reading')
     registration_pages.attach_photo('123.jpeg')
