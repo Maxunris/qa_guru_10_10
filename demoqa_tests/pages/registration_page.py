@@ -1,18 +1,11 @@
 from selene import browser, have, be
-from selenium import webdriver
 from demoqa_tests import resource
-import time
 
 
 class RegistrationPage:
 
     def open(self):
-        driver_options = webdriver.ChromeOptions()
-        driver_options.page_load_strategy = "eager"
-        browser.config.driver_options = driver_options
         browser.open('/automation-practice-form')
-        browser.driver.execute_script("document.querySelector('#fixedban').remove();")
-        browser.driver.execute_script("document.querySelector('footer').remove();")
 
     def fill_first_name(self, first_name):
         browser.element('#firstName').should(be.visible).type(first_name)
@@ -52,14 +45,10 @@ class RegistrationPage:
             be.visible).type(current_address)
 
     def fill_state(self, state):
-        browser.element('#state').click()
-        browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(state)).click()
+        browser.element('#react-select-3-input').type(state).press_enter()
 
     def fill_city(self, city):
-        browser.element('#city').click()
-        browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(city)).click()
+        browser.element('#react-select-4-input').type(city).press_enter()
 
     def sumbit(self):
         browser.element('#submit').should(be.clickable).press_enter()
