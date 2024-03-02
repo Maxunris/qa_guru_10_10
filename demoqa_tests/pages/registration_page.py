@@ -1,16 +1,12 @@
 from selene import browser, be, have
 from demoqa_tests.data.users import Users
 from demoqa_tests import resource_path
-from selenium import webdriver
 
 
 class RegistrationPage:
 
     def open(self):
-        driver_options = webdriver.ChromeOptions()
-        driver_options.page_load_strategy = "eager"
-        browser.config.driver_options = driver_options
-        browser.open("/")
+        browser.open("/automation-practice-form")
 
     def registration_form_page(self, user: Users):
         browser.element('#firstName').should(be.visible).type(user.first_name)
@@ -35,12 +31,8 @@ class RegistrationPage:
             resource_path.path_photo(user.photo))
 
         browser.element("#currentAddress").type(user.current_address)
-        browser.element('#state').click()
-        browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(user.state)).click()
-        browser.element('#city').click()
-        browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(user.city)).click()
+        browser.element('#react-select-3-input').type(user.state).press_enter()
+        browser.element('#react-select-4-input').type(user.city).press_enter()
 
         browser.element('#submit').should(be.clickable).press_enter()
 
