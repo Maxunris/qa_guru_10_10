@@ -23,12 +23,7 @@ class RegistrationPage:
         s('#lastName').should(be.blank).type(value)
         return self
 
-    def fill_date_of_birth(self, year, month, day):
-        browser.element("#dateOfBirthInput").click()
-        browser.element(".react-datepicker__year-select").send_keys(year)
-        browser.element(".react-datepicker__month-select").send_keys(month)
-        browser.element(f".react-datepicker__day--0{day}").click()
-        time.sleep(3)
+
 
     def fill_email(self, value):
         s('#userEmail').should(be.blank).type(value)
@@ -42,8 +37,15 @@ class RegistrationPage:
         s('#userNumber').type(value)
         return self
 
+    def fill_date_of_birth(self, year, month, day):
+        browser.element("#dateOfBirthInput").click()
+        browser.element(".react-datepicker__year-select").send_keys(year)
+        browser.element(".react-datepicker__month-select").send_keys(month)
+        browser.element(f".react-datepicker__day--0{day}").click()
+        time.sleep(3)
+
     def fill_subject(self, value):
-        browser.element('#subjectsInput').type(value).press_enter()
+        s('#subjectsInput').type(value).press_enter()
         return self
 
 
